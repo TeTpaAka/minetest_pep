@@ -164,16 +164,16 @@ if(minetest.get_modpath("default") ~= nil) then
 		output = "pep:speedminus",
 		recipe = { "default:dry_shrub", "pep:water" }
 	})
-	minetest.register_craft({
-		type = "shapeless",
-		output = "pep:speedplus",
-		recipe = { "default:obsidian_shard", "pep:water" }
-	})
 	if(minetest.get_modpath("flowers") ~= nil) then
 		minetest.register_craft({
 			type = "shapeless",
 			output = "pep:jumpplus",
 			recipe = { "flowers:flower_geranium", "default:grass_1", "pep:water" }
+		})
+		minetest.register_craft({
+			type = "shapeless",
+			output = "pep:speedplus",
+			recipe = { "flowers:rose", "flowers:dandelion_yellow", "pep:water" }
 		})
 	end
 	minetest.register_craft({
