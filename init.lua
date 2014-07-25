@@ -46,6 +46,8 @@ playereffects.register_effect_type("pepspeedminus", "Low speed", nil, {"speed"},
 		player:set_physics_override({speed=1})
 	end
 )
+playereffects.register_effect_type("pepspeedreset", "Speed neutralizer", nil, {"speed"},
+	function() end, function() end)
 playereffects.register_effect_type("pepjumpplus", "High jump", nil, {"jump"},
 	function(player)
 		player:set_physics_override({jump=2})
@@ -62,6 +64,8 @@ playereffects.register_effect_type("pepjumpminus", "Low jump", nil, {"jump"},
 		player:set_physics_override({jump=1})
 	end
 )
+playereffects.register_effect_type("pepjumpreset", "Jump height neutralizer", nil, {"jump"},
+	function() end, function() end)
 playereffects.register_effect_type("pepgrav0", "No gravity", nil, {"gravity"},
 	function(player)
 		player:set_physics_override({gravity=0})
@@ -70,6 +74,8 @@ playereffects.register_effect_type("pepgrav0", "No gravity", nil, {"gravity"},
 		player:set_physics_override({gravity=1})
 	end
 )
+playereffects.register_effect_type("pepgravreset", "Gravity neutralizer", nil, {"gravity"},
+	function() end, function() end)
 playereffects.register_effect_type("pepregen", "Regeneration", nil, {"health"},
 	function(player)
 		player:set_hp(player:get_hp()+1)
@@ -82,13 +88,20 @@ playereffects.register_effect_type("pepregen2", "Strong regeneration", nil, {"he
 	end,
 	nil, nil, nil, 1
 )
-
 playereffects.register_effect_type("peppoison", "Poisoned", nil, {"health"},
 	function(player)
-		player:set_hp(player:get_hp()-1)
+		player:set_hp(player:get_hp()+1)
 	end,
 	nil, nil, nil, 2
 )
+playereffects.register_effect_type("peppoison2", "Badly poisoned", nil, {"health"},
+	function(player)
+		player:set_hp(player:get_hp()-2)
+	end,
+	nil, nil, nil, 1
+)
+playereffects.register_effect_type("pepantidote", "Antidote", nil, {"health"},
+	function() end, function() end)
 playereffects.register_effect_type("pepbreath", "Perfect breath", nil, {"breath"},
 	function(player)
 		player:set_breath(player:get_breath()+2)
@@ -116,6 +129,12 @@ pep.register_potion({
 	duration = 30
 })
 pep.register_potion({
+	basename = "speedreset",
+	contentstring = "Speed Neutralizer",
+	effect_type = "pepspeedreset",
+	duration = 0
+})
+pep.register_potion({
 	basename = "breath",
 	contentstring = "Air Potion",
 	effect_type = "pepbreath",
@@ -134,10 +153,34 @@ pep.register_potion({
 	duration = 10,
 })
 pep.register_potion({
+	basename = "poison",
+	contentstring = "Poison",
+	effect_type = "peppoison",
+	duration = 10,
+})
+pep.register_potion({
+	basename = "regen2",
+	contentstring = "Potent Poison",
+	effect_type = "peppoison2",
+	duration = 10,
+})
+pep.register_potion({
+	basename = "antidote",
+	contentstring = "Antidote",
+	effect_type = "pepantidote",
+	duration = 0
+})
+pep.register_potion({
 	basename = "grav0",
 	contentstring = "Non-Gravity Potion",
 	effect_type = "pepgrav0",
 	duration = 20,
+})
+pep.register_potion({
+	basename = "gravreset",
+	contentstring = "Gravity Neutralizer",
+	effect_type = "pepgravreset",
+	duration = 0,
 })
 pep.register_potion({
 	basename = "jumpplus",
@@ -150,6 +193,12 @@ pep.register_potion({
 	contentstring = "Low Jumping Potion",
 	effect_type = "pepjumpminus",
 	duration = 30,
+})
+pep.register_potion({
+	basename = "jumpreset",
+	contentstring = "Jump Neutralizer",
+	effect_type = "pepjumpreset",
+	duration = 0,
 })
 
 --[=[ register crafts ]=]
