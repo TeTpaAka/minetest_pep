@@ -62,7 +62,7 @@ playereffects.register_effect_type("pepjumpminus", "Low jump", nil, {"jump"},
 		player:set_physics_override({jump=1})
 	end
 )
-playereffects.register_effect_type("pepfloat", "No gravity", nil, {"gravity"},
+playereffects.register_effect_type("pepgrav0", "No gravity", nil, {"gravity"},
 	function(player)
 		player:set_physics_override({gravity=0})
 	end,
@@ -134,9 +134,9 @@ pep.register_potion({
 	duration = 10,
 })
 pep.register_potion({
-	basename = "float",
+	basename = "grav0",
 	contentstring = "Non-Gravity Potion",
-	effect_type = "pepfloat",
+	effect_type = "pepgrav0",
 	duration = 20,
 })
 pep.register_potion({
@@ -152,7 +152,8 @@ pep.register_potion({
 	duration = 30,
 })
 
---[[ register crafts ]]
+--[=[ register crafts ]=]
+--[[ normal potions ]]
 if(minetest.get_modpath("default") ~= nil) then
 	minetest.register_craft({
 		type = "shapeless",
@@ -169,11 +170,6 @@ if(minetest.get_modpath("default") ~= nil) then
 			type = "shapeless",
 			output = "pep:jumpplus",
 			recipe = { "flowers:flower_geranium", "default:grass_1", "pep:water" }
-		})
-		minetest.register_craft({
-			type = "shapeless",
-			output = "pep:speedplus",
-			recipe = { "flowers:rose", "flowers:dandelion_yellow", "pep:water" }
 		})
 	end
 	minetest.register_craft({
@@ -193,7 +189,42 @@ if(minetest.get_modpath("default") ~= nil) then
 	})
 	minetest.register_craft({
 		type = "shapeless",
-		output = "pep:float",
+		output = "pep:grav0",
 		recipe = { "default:mese_crystal", "pep:water" }
 	})
 end
+if(minetest.get_modpath("flowers") ~= nil) then
+	minetest.register_craft({
+		type = "shapeless",
+		output = "pep:speedplus",
+		recipe = { "flowers:rose", "flowers:dandelion_yellow", "pep:water" }
+	})
+end
+
+--[[ neutralizers ]]
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "pep:speedreset",
+	recipe = { "pep:speedplus", "pep:speedminus" }
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "pep:antidote",
+	recipe = { "pep:regen", "pep:poison" }
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "pep:antidote",
+	recipe = { "pep:regen2", "pep:poison2" }
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "pep:jumpreset",
+	recipe = { "pep:jumpplus", "pep:jumpminus" }
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "pep:gravreset" ,
+	recipe = { "pep:grav0", "group:stone" }
+})
