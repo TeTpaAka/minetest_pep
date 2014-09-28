@@ -13,19 +13,10 @@ function pep.register_potion(potiondef)
 			return itemstack
 		end
 	end
-	minetest.register_node("pep:"..potiondef.basename, {
+	minetest.register_craftitem("pep:"..potiondef.basename, {
 		description = "Glass Bottle ("..potiondef.contentstring..")",
-		drawtype = "plantlike",
-		tiles = { "pep_"..potiondef.basename..".png" },
-		inventory_image = "pep_"..potiondef.basename.."_inv.png",
-		paramtype = "light",
-		walkable = false,
-		selection_box = {
-			type = "fixed",
-			fixed = { -0.25, -0.5, -0.25, 0.25, 0.4, 0.25 },
-		},
-		groups = { vessel = 1, dig_immediate = 3, attached_node =1},
-		sounds = default.node_sound_glass_defaults(),
+		inventory_image = "pep_"..potiondef.basename..".png",
+		wield_image = "pep_"..potiondef.basename..".png",
 		on_use = on_use,
 	})
 end
@@ -88,32 +79,12 @@ playereffects.register_effect_type("pepregen2", "Strong regeneration", nil, {"he
 	end,
 	nil, nil, nil, 1
 )
-playereffects.register_effect_type("peppoison", "Poisoned", nil, {"health"},
-	function(player)
-		player:set_hp(player:get_hp()+1)
-	end,
-	nil, nil, nil, 2
-)
-playereffects.register_effect_type("peppoison2", "Badly poisoned", nil, {"health"},
-	function(player)
-		player:set_hp(player:get_hp()-2)
-	end,
-	nil, nil, nil, 1
-)
-playereffects.register_effect_type("pepantidote", "Antidote", nil, {"health"},
-	function() end, function() end)
 playereffects.register_effect_type("pepbreath", "Perfect breath", nil, {"breath"},
 	function(player)
 		player:set_breath(player:get_breath()+2)
 	end,
 	nil, nil, nil, 1
 )
-
-pep.register_potion({
-	basename = "water",
-	contentstring = "Water",
-	effect_type = nil,
-})
 
 pep.register_potion({
 	basename = "speedplus",
@@ -138,7 +109,7 @@ pep.register_potion({
 	basename = "breath",
 	contentstring = "Air Potion",
 	effect_type = "pepbreath",
-	duration = 60,
+	duration = 30,
 })
 pep.register_potion({
 	basename = "regen",
@@ -151,24 +122,6 @@ pep.register_potion({
 	contentstring = "Strong Healing Potion",
 	effect_type = "pepregen2",
 	duration = 10,
-})
-pep.register_potion({
-	basename = "poison",
-	contentstring = "Poison",
-	effect_type = "peppoison",
-	duration = 10,
-})
-pep.register_potion({
-	basename = "regen2",
-	contentstring = "Potent Poison",
-	effect_type = "peppoison2",
-	duration = 10,
-})
-pep.register_potion({
-	basename = "antidote",
-	contentstring = "Antidote",
-	effect_type = "pepantidote",
-	duration = 0
 })
 pep.register_potion({
 	basename = "grav0",
@@ -203,69 +156,57 @@ pep.register_potion({
 
 --[=[ register crafts ]=]
 --[[ normal potions ]]
-if(minetest.get_modpath("default") ~= nil) then
+if(minetest.get_modpath("vessels")~=nil) then
+if(minetest.get_modpath("default")~=nil) then
 	minetest.register_craft({
 		type = "shapeless",
 		output = "pep:breath",
-		recipe = { "default:papyrus", "pep:water" }
+		recipe = { "default:papyrus", "default:papyrus", "default:papyrus", "default:papyrus",
+			   "default:papyrus", "default:papyrus", "default:papyrus", "default:papyrus", "vessels:glass_bottle" }
 	})
 	minetest.register_craft({
 		type = "shapeless",
 		output = "pep:speedminus",
-		recipe = { "default:dry_shrub", "pep:water" }
+		recipe = { "default:dry_shrub", "vessels:glass_bottle" }
 	})
 	if(minetest.get_modpath("flowers") ~= nil) then
 		minetest.register_craft({
 			type = "shapeless",
 			output = "pep:jumpplus",
-			recipe = { "flowers:flower_geranium", "default:grass_1", "pep:water" }
+			recipe = { "flowers:flower_geranium", "default:grass_1", "vessels:glass_bottle" }
 		})
 	end
 	minetest.register_craft({
 		type = "shapeless",
 		output = "pep:jumpminus",
-		recipe = { "default:leaves", "default:jungleleaves", "pep:water" }
+		recipe = { "default:leaves", "default:jungleleaves", "vessels:glass_bottle" }
 	})
 	minetest.register_craft({
 		type = "shapeless",
 		output = "pep:regen",
-		recipe = { "default:cactus", "default:junglegrass", "pep:water" }
+		recipe = { "default:cactus", "default:junglegrass", "vessels:glass_bottle" }
 	})
-	minetest.register_craft({
-		type = "shapeless",
-		output = "pep:regen2",
-		recipe = { "default:gold_lump", "pep:regen" }
-	})
-	minetest.register_craft({
+minetest.register_craft({
 		type = "shapeless",
 		output = "pep:grav0",
-		recipe = { "default:mese_crystal", "pep:water" }
+		recipe = { "default:mese_crystal", "vessels:glass_bottle" }
 	})
 end
 if(minetest.get_modpath("flowers") ~= nil) then
 	minetest.register_craft({
 		type = "shapeless",
 		output = "pep:speedplus",
-		recipe = { "flowers:rose", "flowers:dandelion_yellow", "pep:water" }
+		recipe = { "flowers:rose", "flowers:dandelion_yellow", "vessels:glass_bottle" }
 	})
 end
+end
 
---[[ neutralizers ]]
+--[[ independent crafts ]]
 
 minetest.register_craft({
 	type = "shapeless",
 	output = "pep:speedreset",
 	recipe = { "pep:speedplus", "pep:speedminus" }
-})
-minetest.register_craft({
-	type = "shapeless",
-	output = "pep:antidote",
-	recipe = { "pep:regen", "pep:poison" }
-})
-minetest.register_craft({
-	type = "shapeless",
-	output = "pep:antidote",
-	recipe = { "pep:regen2", "pep:poison2" }
 })
 minetest.register_craft({
 	type = "shapeless",
@@ -276,4 +217,9 @@ minetest.register_craft({
 	type = "shapeless",
 	output = "pep:gravreset" ,
 	recipe = { "pep:grav0", "group:stone" }
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "pep:regen2",
+	recipe = { "default:gold_lump", "pep:regen" }
 })
