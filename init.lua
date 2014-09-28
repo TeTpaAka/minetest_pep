@@ -21,7 +21,7 @@ function pep.register_potion(potiondef)
 	})
 end
 
-playereffects.register_effect_type("pepspeedplus", "High speed", nil, {"speed"},
+playereffects.register_effect_type("pepspeedplus", "High speed", "pep_speedplus.png", {"speed"},
 	function(player)
 		player:set_physics_override({speed=2})
 	end,
@@ -29,7 +29,7 @@ playereffects.register_effect_type("pepspeedplus", "High speed", nil, {"speed"},
 		player:set_physics_override({speed=1})
 	end
 )
-playereffects.register_effect_type("pepspeedminus", "Low speed", nil, {"speed"},
+playereffects.register_effect_type("pepspeedminus", "Low speed", "pep_speedminus.png", {"speed"},
 	function(player)
 		player:set_physics_override({speed=0.5})
 	end,
@@ -37,9 +37,9 @@ playereffects.register_effect_type("pepspeedminus", "Low speed", nil, {"speed"},
 		player:set_physics_override({speed=1})
 	end
 )
-playereffects.register_effect_type("pepspeedreset", "Speed neutralizer", nil, {"speed"},
+playereffects.register_effect_type("pepspeedreset", "Speed neutralizer", "pep_speedreset.png", {"speed"},
 	function() end, function() end)
-playereffects.register_effect_type("pepjumpplus", "High jump", nil, {"jump"},
+playereffects.register_effect_type("pepjumpplus", "High jump", "pep_jumpplus.png", {"jump"},
 	function(player)
 		player:set_physics_override({jump=2})
 	end,
@@ -47,7 +47,7 @@ playereffects.register_effect_type("pepjumpplus", "High jump", nil, {"jump"},
 		player:set_physics_override({jump=1})
 	end
 )
-playereffects.register_effect_type("pepjumpminus", "Low jump", nil, {"jump"},
+playereffects.register_effect_type("pepjumpminus", "Low jump", "pep_jumpminus.png", {"jump"},
 	function(player)
 		player:set_physics_override({jump=0.5})
 	end,
@@ -55,9 +55,9 @@ playereffects.register_effect_type("pepjumpminus", "Low jump", nil, {"jump"},
 		player:set_physics_override({jump=1})
 	end
 )
-playereffects.register_effect_type("pepjumpreset", "Jump height neutralizer", nil, {"jump"},
+playereffects.register_effect_type("pepjumpreset", "Jump height neutralizer", "pep_jumpreset.png", {"jump"},
 	function() end, function() end)
-playereffects.register_effect_type("pepgrav0", "No gravity", nil, {"gravity"},
+playereffects.register_effect_type("pepgrav0", "No gravity", "pep_grav0.png", {"gravity"},
 	function(player)
 		player:set_physics_override({gravity=0})
 	end,
@@ -65,21 +65,21 @@ playereffects.register_effect_type("pepgrav0", "No gravity", nil, {"gravity"},
 		player:set_physics_override({gravity=1})
 	end
 )
-playereffects.register_effect_type("pepgravreset", "Gravity neutralizer", nil, {"gravity"},
+playereffects.register_effect_type("pepgravreset", "Gravity neutralizer", "pep_gravreset.png", {"gravity"},
 	function() end, function() end)
-playereffects.register_effect_type("pepregen", "Regeneration", nil, {"health"},
+playereffects.register_effect_type("pepregen", "Regeneration", "pep_regen.png", {"health"},
 	function(player)
 		player:set_hp(player:get_hp()+1)
 	end,
 	nil, nil, nil, 2
 )
-playereffects.register_effect_type("pepregen2", "Strong regeneration", nil, {"health"},
+playereffects.register_effect_type("pepregen2", "Strong regeneration", "pep_regen2.png", {"health"},
 	function(player)
 		player:set_hp(player:get_hp()+2)
 	end,
 	nil, nil, nil, 1
 )
-playereffects.register_effect_type("pepbreath", "Perfect breath", nil, {"breath"},
+playereffects.register_effect_type("pepbreath", "Perfect breath", "pep_breath.png", {"breath"},
 	function(player)
 		player:set_breath(player:get_breath()+2)
 	end,
