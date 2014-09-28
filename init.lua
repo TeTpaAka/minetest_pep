@@ -201,6 +201,14 @@ if(minetest.get_modpath("flowers") ~= nil) then
 end
 end
 
+if(minetest.get_modpath("default") ~= nil) then
+	minetest.register_craft({
+		type = "shapeless",
+		output = "pep:regen2",
+		recipe = { "default:gold_lump", "pep:regen" }
+	})
+end
+
 --[[ independent crafts ]]
 
 minetest.register_craft({
@@ -217,9 +225,4 @@ minetest.register_craft({
 	type = "shapeless",
 	output = "pep:gravreset" ,
 	recipe = { "pep:grav0", "group:stone" }
-})
-minetest.register_craft({
-	type = "shapeless",
-	output = "pep:regen2",
-	recipe = { "default:gold_lump", "pep:regen" }
 })
