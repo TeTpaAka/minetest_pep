@@ -21,6 +21,105 @@ function pep.register_potion(potiondef)
 	})
 end
 
+pep.moles = {}
+
+function pep.enable_mole_mode(playername)
+	pep.moles[playername] = true
+end
+
+function pep.disable_mole_mode(playername)
+	pep.moles[playername] = false
+end
+
+function pep.yaw_to_vector(yaw)
+	local tau = math.pi*2
+
+	yaw = yaw % tau
+	if yaw < tau/8 then
+		return { x=0, y=0, z=1}
+	elseif yaw < (3/8)*tau then
+		return { x=-1, y=0, z=0 }
+	elseif yaw < (5/8)*tau then
+		return { x=0, y=0, z=-1 }
+	elseif yaw < (7/8)*tau then
+		return { x=1, y=0, z=0 }
+	else
+		return { x=0, y=0, z=1}
+	end
+end
+
+function pep.moledig(playername)
+	local player = minetest.get_player_by_name(playername)
+
+	local yaw = player:get_look_yaw()
+	-- fix stupid oddity of Minetest, adding pi/2 to the actual player's look yaw...
+	-- TODO: Remove this code as soon as Minetest fixes this.
+	yaw = yaw - math.pi/2
+
+	local pos = vector.round(player:getpos())
+
+	local v = pep.yaw_to_vector(yaw)
+
+	local digpos1 = vector.add(pos, v)
+	local digpos2 = { x = digpos1.x, y = digpos1.y+1, z = digpos1.z }
+
+	local try_dig = function(pos)
+		local n = minetest.get_node(pos)
+		local ndef = minetest.registered_nodes[n.name]
+		if ndef.walkable and ndef.diggable then
+			if ndef.can_dig ~= nil then
+				if ndef.can_dig() then
+					return true
+				else
+					return false
+				end
+			else
+				return true
+			end
+		else
+			return false
+		end
+	end
+
+	local dig = function(pos)
+		if try_dig(pos) then
+			local n = minetest.get_node(pos)
+			local ndef = minetest.registered_nodes[n.name]
+			if ndef.sounds ~= nil then
+				minetest.sound_play(ndef.sounds.dug, { pos = pos })
+			end
+			-- TODO: Replace this code as soon Minetest removes support for this function
+			local drops = minetest.get_node_drops(n.name, "default:pick_steel")
+			minetest.dig_node(pos)
+			local inv = player:get_inventory()
+			local leftovers = {}
+			for i=1,#drops do
+				table.insert(leftovers, inv:add_item("main", drops[i]))
+			end
+			for i=1,#leftovers do
+				minetest.add_item(pos, leftovers[i])
+			end
+		end
+	end
+
+	dig(digpos1)
+	dig(digpos2)
+end
+
+pep.timer = 0
+
+minetest.register_globalstep(function(dtime)
+	pep.timer = pep.timer + dtime
+	if pep.timer > 0.5 then
+		for playername, is_mole in pairs(pep.moles) do
+			if is_mole then
+				pep.moledig(playername)
+			end
+		end
+		pep.timer = 0
+	end
+end)
+
 playereffects.register_effect_type("pepspeedplus", "High speed", "pep_speedplus.png", {"speed"},
 	function(player)
 		player:set_physics_override({speed=2})
@@ -84,6 +183,14 @@ playereffects.register_effect_type("pepbreath", "Perfect breath", "pep_breath.pn
 		player:set_breath(player:get_breath()+2)
 	end,
 	nil, nil, nil, 1
+)
+playereffects.register_effect_type("pepmole", "Mole mode", "pep_mole.png", {"autodig"},
+	function(player)
+		pep.enable_mole_mode(player:get_player_name())
+	end,
+	function(effect, player)
+		pep.disable_mole_mode(player:get_player_name())
+	end
 )
 
 pep.register_potion({
@@ -153,6 +260,12 @@ pep.register_potion({
 	effect_type = "pepjumpreset",
 	duration = 0,
 })
+pep.register_potion({
+	basename = "mole",
+	contentstring = "Mole Potion",
+	effect_type = "pepmole",
+	duration = 18,
+})
 
 --[=[ register crafts ]=]
 --[[ normal potions ]]
@@ -190,6 +303,11 @@ minetest.register_craft({
 		type = "shapeless",
 		output = "pep:grav0",
 		recipe = { "default:mese_crystal", "vessels:glass_bottle" }
+	})
+	minetest.register_craft({
+		type = "shapeless",
+		output = "pep:mole",
+		recipe = { "default:pick_steel", "default:shovel_steel", "vessels:glass_bottle" },
 	})
 end
 if(minetest.get_modpath("flowers") ~= nil) then
