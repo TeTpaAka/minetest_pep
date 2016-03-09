@@ -178,6 +178,31 @@ playereffects.register_effect_type("pepregen2", "Strong regeneration", "pep_rege
 	end,
 	nil, nil, nil, 1
 )
+
+if minetest.get_modpath("mana") ~= nil then
+	playereffects.register_effect_type("pepmanaregen", "Weak mana boost", "pep_manaregen.png", {"mana"},
+		function(player)
+			local name = player:get_player_name()
+			mana.setregen(name, mana.getregen(name) + 0.5)
+		end,
+		function(effect, player)
+			local name = player:get_player_name()
+			mana.setregen(name, mana.getregen(name) - 0.5)
+		end
+	)
+	playereffects.register_effect_type("pepmanaregen2", "Strong mana boost", "pep_manaregen2.png", {"mana"},
+		function(player)
+			local name = player:get_player_name()
+			mana.setregen(name, mana.getregen(name) + 1)
+		end,
+		function(effect, player)
+			local name = player:get_player_name()
+			mana.setregen(name, mana.getregen(name) - 1)
+		end
+	)
+end
+
+
 playereffects.register_effect_type("pepbreath", "Perfect breath", "pep_breath.png", {"breath"},
 	function(player)
 		player:set_breath(player:get_breath()+2)
@@ -266,6 +291,21 @@ pep.register_potion({
 	effect_type = "pepmole",
 	duration = 18,
 })
+if(minetest.get_modpath("mana")~=nil) then
+	pep.register_potion({
+		basename = "manaregen",
+		contentstring = "Weak Mana Potion",
+		effect_type = "pepmanaregen",
+		duration = 10,
+	})
+	pep.register_potion({
+		basename = "manaregen2",
+		contentstring = "Strong Mana Potion",
+		effect_type = "pepmanaregen2",
+		duration = 10,
+	})
+end
+
 
 --[=[ register crafts ]=]
 --[[ normal potions ]]
@@ -289,6 +329,11 @@ if(minetest.get_modpath("default")~=nil) then
 			recipe = { "flowers:flower_tulip", "default:grass_1", "default:mese_crystal_fragment",
 				   "default:mese_crystal_fragment", "vessels:glass_bottle" }
 		})
+		minetest.register_craft({
+			type = "shapeless",
+			output = "pep:poisoner",
+			recipe = { "flowers:mushroom_red", "flowers:mushroom_red", "flowers:mushroom_red", "vessels:glass_bottle" }
+		})
 
 		if(minetest.get_modpath("farming") ~= nil) then
 			minetest.register_craft({
@@ -303,6 +348,22 @@ if(minetest.get_modpath("default")~=nil) then
 			type = "shapeless",
 			output = "pep:regen2",
 			recipe = { "default:gold_lump", "farming:flour", "pep:regen" }
+		})
+		if minetest.get_modpath("mana") ~= nil then
+			minetest.register_craft({
+				type = "shapeless",
+				output = "pep:manaregen",
+				recipe = { "default:dry_shrub", "default:dry_shrub", "farming:seed_cotton", "default:mese_crystal_fragment",
+					   "vessels:glass_bottle" }
+			})
+		end
+	end
+	if minetest.get_modpath("mana") ~= nil then
+		minetest.register_craft({
+			type = "shapeless",
+			output = "pep:manaregen2",
+			recipe = { "default:dry_shrub", "default:dry_shrub", "default:dry_shrub", "default:dry_shrub", "default:junglesapling",
+				   "default:acacia_sapling", "default:mese_crystal_fragment", "pep:manaregen" }
 		})
 	end
 
