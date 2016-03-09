@@ -280,26 +280,38 @@ if(minetest.get_modpath("default")~=nil) then
 	minetest.register_craft({
 		type = "shapeless",
 		output = "pep:speedminus",
-		recipe = { "default:dry_shrub", "vessels:glass_bottle" }
+		recipe = { "default:dry_grass_1", "default:ice", "vessels:glass_bottle" }
 	})
 	if(minetest.get_modpath("flowers") ~= nil) then
 		minetest.register_craft({
 			type = "shapeless",
 			output = "pep:jumpplus",
-			recipe = { "flowers:flower_geranium", "default:grass_1", "vessels:glass_bottle" }
+			recipe = { "flowers:flower_tulip", "default:grass_1", "default:mese_crystal_fragment",
+				   "default:mese_crystal_fragment", "vessels:glass_bottle" }
+		})
+
+		if(minetest.get_modpath("farming") ~= nil) then
+			minetest.register_craft({
+				type = "shapeless",
+				output = "pep:regen",
+				recipe = { "default:cactus", "farming:flour", "flowers:mushroom_brown", "vessels:glass_bottle" }
+			})
+		end
+	end
+	if(minetest.get_modpath("farming") ~= nil) then
+		minetest.register_craft({
+			type = "shapeless",
+			output = "pep:regen2",
+			recipe = { "default:gold_lump", "farming:flour", "pep:regen" }
 		})
 	end
+
 	minetest.register_craft({
 		type = "shapeless",
 		output = "pep:jumpminus",
-		recipe = { "default:leaves", "default:jungleleaves", "vessels:glass_bottle" }
+		recipe = { "default:leaves", "default:jungleleaves", "default:iron_lump", "flowers:dandelion_yellow", "vessels:glass_bottle" }
 	})
 	minetest.register_craft({
-		type = "shapeless",
-		output = "pep:regen",
-		recipe = { "default:cactus", "default:junglegrass", "vessels:glass_bottle" }
-	})
-minetest.register_craft({
 		type = "shapeless",
 		output = "pep:grav0",
 		recipe = { "default:mese_crystal", "vessels:glass_bottle" }
@@ -309,22 +321,19 @@ minetest.register_craft({
 		output = "pep:mole",
 		recipe = { "default:pick_steel", "default:shovel_steel", "vessels:glass_bottle" },
 	})
+	minetest.register_craft({
+		type = "shapeless",
+		output = "pep:gravreset" ,
+		recipe = { "pep:grav0", "default:iron_lump" }
+	})
 end
 if(minetest.get_modpath("flowers") ~= nil) then
 	minetest.register_craft({
 		type = "shapeless",
 		output = "pep:speedplus",
-		recipe = { "flowers:rose", "flowers:dandelion_yellow", "vessels:glass_bottle" }
+		recipe = { "default:pine_sapling", "default:cactus", "flowers:dandelion_yellow", "default:junglegrass", "vessels:glass_bottle" }
 	})
 end
-end
-
-if(minetest.get_modpath("default") ~= nil) then
-	minetest.register_craft({
-		type = "shapeless",
-		output = "pep:regen2",
-		recipe = { "default:gold_lump", "pep:regen" }
-	})
 end
 
 --[[ independent crafts ]]
@@ -339,8 +348,4 @@ minetest.register_craft({
 	output = "pep:jumpreset",
 	recipe = { "pep:jumpplus", "pep:jumpminus" }
 })
-minetest.register_craft({
-	type = "shapeless",
-	output = "pep:gravreset" ,
-	recipe = { "pep:grav0", "group:stone" }
-})
+
