@@ -1,5 +1,5 @@
 # Pep: Player Effects Potions
-Version 1.1.0
+Version 1.2.0
 
 ## Introduction
 This little mod adds some simple potions which add temporary effects when consumed.
