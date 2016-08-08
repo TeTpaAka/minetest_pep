@@ -410,3 +410,40 @@ minetest.register_craft({
 	recipe = { "pep:jumpplus", "pep:jumpminus" }
 })
 
+
+
+if minetest.get_modpath("doc_items") ~= nil then
+	doc.sub.items.set_items_longdesc({
+		["pep:grav0"] = "When you drink this potion, gravity stops affecting you, as if you were in space. The effect lasts for 20 seconds.",
+		["pep:gravreset"] = "Drinking it will stop all gravity effects you currently have.",
+		["pep:breath"] = "Drinking it gives you breath underwater for 30 seconds.",
+		["pep:jumpplus"] = "Drinking it will make you jump higher for 30 seconds.",
+		["pep:jumpminus"] = "Drinking it will make you jump lower for 30 seconds.",
+		["pep:jumpreset"] = "Drinking it will stop all jumping effects you may currently have.",
+		["pep:speedplus"] = "Drinking it will make you run faster for 30 seconds.",
+		["pep:speedminus"] = "Drinking it will make you walk slower for 30 seconds.",
+		["pep:speedreset"] = "Drinking it will stop all speed effects you may currently have.",
+		["pep:regen"] = "Drinking it makes you regnerate health. Every 2 seconds, you get 1 HP, 10 times in total.",
+		["pep:regen2"] = "Drinking it makes you regnerate health quickly. Every second you get 2 HP, 10 times in total.",
+		["pep:mole"] = "Drinking it will start an effect which will magically attempt to mine any two blocks in front of you horizontally, as if you were using a steel pickaxe on them. The effect lasts for 18 seconds.",
+		["pep:manaregen"] = "Drinking it will increase your mana regeneration rate by 0.5 for 10 seconds.",
+		["pep:manaregen2"] = "Drinking it will increase your mana regeneration rate by 1 for 10 seconds.",
+	})
+	local use = "Hold it in your hand, then leftclick to drink it."
+	doc.sub.items.set_items_usagehelp({
+		["pep:grav0"] = use,
+		["pep:gravreset"] = use,
+		["pep:breath"] = use,
+		["pep:jumpplus"] = use,
+		["pep:jumpminus"] = use,
+		["pep:jumpreset"] = use,
+		["pep:speedplus"] = use,
+		["pep:speedminus"] = use,
+		["pep:speedreset"] = use,
+		["pep:regen"] = use,
+		["pep:regen2"] = use,
+		["pep:mole"] = use,
+		["pep:manaregen"] = use,
+		["pep:manaregen2"] = use,
+	})
+end
