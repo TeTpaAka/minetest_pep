@@ -1,3 +1,4 @@
+
 pep = {}
 function pep.register_potion(potiondef)
 	local on_use
@@ -15,6 +16,8 @@ function pep.register_potion(potiondef)
 	end
 	minetest.register_craftitem("pep:"..potiondef.basename, {
 		description = "Glass Bottle ("..potiondef.contentstring..")",
+		x_doc_items_longdesc = potiondef.longdesc,
+		x_doc_items_usagehelp = "Hold it in your hand, then leftclick to drink it.",
 		inventory_image = "pep_"..potiondef.basename..".png",
 		wield_image = "pep_"..potiondef.basename..".png",
 		on_use = on_use,
@@ -221,73 +224,84 @@ playereffects.register_effect_type("pepmole", "Mole mode", "pep_mole.png", {"aut
 pep.register_potion({
 	basename = "speedplus",
 	contentstring = "Running Potion",
+	longdesc = "Drinking it will make you run faster for 30 seconds.",
 	effect_type = "pepspeedplus",
-	duration = 30
+	duration = 30,
 })
-
 pep.register_potion({
 	basename = "speedminus",
 	contentstring = "Slug Potion",
+	longdesc = "Drinking it will make you walk slower for 30 seconds.",
 	effect_type = "pepspeedminus",
-	duration = 30
+	duration = 30,
 })
 pep.register_potion({
 	basename = "speedreset",
 	contentstring = "Speed Neutralizer",
+	longdesc = "Drinking it will stop all speed effects you may currently have.",
 	effect_type = "pepspeedreset",
 	duration = 0
 })
 pep.register_potion({
 	basename = "breath",
 	contentstring = "Air Potion",
+	longdesc = "Drinking it gives you breath underwater for 30 seconds.",
 	effect_type = "pepbreath",
 	duration = 30,
 })
 pep.register_potion({
 	basename = "regen",
 	contentstring = "Weak Healing Potion",
+	longdesc = "Drinking it makes you regnerate health. Every 2 seconds, you get 1 HP, 10 times in total.",
 	effect_type = "pepregen",
 	duration = 10,
 })
 pep.register_potion({
 	basename = "regen2",
 	contentstring = "Strong Healing Potion",
+	longdesc = "Drinking it makes you regnerate health quickly. Every second you get 2 HP, 10 times in total.",
 	effect_type = "pepregen2",
 	duration = 10,
 })
 pep.register_potion({
 	basename = "grav0",
 	contentstring = "Non-Gravity Potion",
+	longdesc = "When you drink this potion, gravity stops affecting you, as if you were in space. The effect lasts for 20 seconds.",
 	effect_type = "pepgrav0",
 	duration = 20,
 })
 pep.register_potion({
 	basename = "gravreset",
 	contentstring = "Gravity Neutralizer",
+	longdesc = "Drinking it will stop all gravity effects you currently have.",
 	effect_type = "pepgravreset",
 	duration = 0,
 })
 pep.register_potion({
 	basename = "jumpplus",
 	contentstring = "High Jumping Potion",
+	longdesc = "Drinking it will make you jump higher for 30 seconds.",
 	effect_type = "pepjumpplus",
 	duration = 30,
 })
 pep.register_potion({
 	basename = "jumpminus",
 	contentstring = "Low Jumping Potion",
+	longdec = "Drinking it will make you jump lower for 30 seconds.",
 	effect_type = "pepjumpminus",
 	duration = 30,
 })
 pep.register_potion({
 	basename = "jumpreset",
 	contentstring = "Jump Neutralizer",
+	longdesc = "Drinking it will stop all jumping effects you may currently have.",
 	effect_type = "pepjumpreset",
 	duration = 0,
 })
 pep.register_potion({
 	basename = "mole",
 	contentstring = "Mole Potion",
+	longdesc = "Drinking it will start an effect which will magically attempt to mine any two blocks in front of you horizontally, as if you were using a steel pickaxe on them. The effect lasts for 18 seconds.",
 	effect_type = "pepmole",
 	duration = 18,
 })
@@ -297,12 +311,14 @@ if(minetest.get_modpath("mana")~=nil) then
 		contentstring = "Weak Mana Potion",
 		effect_type = "pepmanaregen",
 		duration = 10,
+		longdesc = "Drinking it will increase your mana regeneration rate by 0.5 for 10 seconds.",
 	})
 	pep.register_potion({
 		basename = "manaregen2",
 		contentstring = "Strong Mana Potion",
 		effect_type = "pepmanaregen2",
 		duration = 10,
+		longdesc = "Drinking it will increase your mana regeneration rate by 1 for 10 seconds.",
 	})
 end
 
@@ -410,40 +426,3 @@ minetest.register_craft({
 	recipe = { "pep:jumpplus", "pep:jumpminus" }
 })
 
-
-
-if minetest.get_modpath("doc_items") ~= nil then
-	doc.sub.items.set_items_longdesc({
-		["pep:grav0"] = "When you drink this potion, gravity stops affecting you, as if you were in space. The effect lasts for 20 seconds.",
-		["pep:gravreset"] = "Drinking it will stop all gravity effects you currently have.",
-		["pep:breath"] = "Drinking it gives you breath underwater for 30 seconds.",
-		["pep:jumpplus"] = "Drinking it will make you jump higher for 30 seconds.",
-		["pep:jumpminus"] = "Drinking it will make you jump lower for 30 seconds.",
-		["pep:jumpreset"] = "Drinking it will stop all jumping effects you may currently have.",
-		["pep:speedplus"] = "Drinking it will make you run faster for 30 seconds.",
-		["pep:speedminus"] = "Drinking it will make you walk slower for 30 seconds.",
-		["pep:speedreset"] = "Drinking it will stop all speed effects you may currently have.",
-		["pep:regen"] = "Drinking it makes you regnerate health. Every 2 seconds, you get 1 HP, 10 times in total.",
-		["pep:regen2"] = "Drinking it makes you regnerate health quickly. Every second you get 2 HP, 10 times in total.",
-		["pep:mole"] = "Drinking it will start an effect which will magically attempt to mine any two blocks in front of you horizontally, as if you were using a steel pickaxe on them. The effect lasts for 18 seconds.",
-		["pep:manaregen"] = "Drinking it will increase your mana regeneration rate by 0.5 for 10 seconds.",
-		["pep:manaregen2"] = "Drinking it will increase your mana regeneration rate by 1 for 10 seconds.",
-	})
-	local use = "Hold it in your hand, then leftclick to drink it."
-	doc.sub.items.set_items_usagehelp({
-		["pep:grav0"] = use,
-		["pep:gravreset"] = use,
-		["pep:breath"] = use,
-		["pep:jumpplus"] = use,
-		["pep:jumpminus"] = use,
-		["pep:jumpreset"] = use,
-		["pep:speedplus"] = use,
-		["pep:speedminus"] = use,
-		["pep:speedreset"] = use,
-		["pep:regen"] = use,
-		["pep:regen2"] = use,
-		["pep:mole"] = use,
-		["pep:manaregen"] = use,
-		["pep:manaregen2"] = use,
-	})
-end
