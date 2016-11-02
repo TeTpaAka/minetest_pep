@@ -295,7 +295,7 @@ pep.register_potion({
 pep.register_potion({
 	basename = "jumpminus",
 	contentstring = S("Low Jumping Potion"),
-	longdec = S("Drinking it will make you jump lower for 30 seconds."),
+	longdesc = S("Drinking it will make you jump lower for 30 seconds."),
 	effect_type = "pepjumpminus",
 	duration = 30,
 })
