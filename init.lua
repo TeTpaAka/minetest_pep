@@ -1,3 +1,11 @@
+-- Boilerplate to support localized strings if intllib mod is installed.
+local S
+if minetest.get_modpath("intllib") then
+	dofile(minetest.get_modpath("intllib").."/intllib.lua")
+	S = intllib.Getter(minetest.get_current_modname())
+else
+	S = function(s) return s end
+end
 
 pep = {}
 function pep.register_potion(potiondef)
@@ -15,9 +23,9 @@ function pep.register_potion(potiondef)
 		end
 	end
 	minetest.register_craftitem("pep:"..potiondef.basename, {
-		description = "Glass Bottle ("..potiondef.contentstring..")",
+		description = string.format(S("Glass Bottle (%s)"), potiondef.contentstring),
 		x_doc_items_longdesc = potiondef.longdesc,
-		x_doc_items_usagehelp = "Hold it in your hand, then leftclick to drink it.",
+		x_doc_items_usagehelp = S("Hold it in your hand, then left-click to drink it."),
 		inventory_image = "pep_"..potiondef.basename..".png",
 		wield_image = "pep_"..potiondef.basename..".png",
 		on_use = on_use,
@@ -123,7 +131,7 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
-playereffects.register_effect_type("pepspeedplus", "High speed", "pep_speedplus.png", {"speed"},
+playereffects.register_effect_type("pepspeedplus", S("High speed"), "pep_speedplus.png", {"speed"},
 	function(player)
 		player:set_physics_override({speed=2})
 	end,
@@ -131,7 +139,7 @@ playereffects.register_effect_type("pepspeedplus", "High speed", "pep_speedplus.
 		player:set_physics_override({speed=1})
 	end
 )
-playereffects.register_effect_type("pepspeedminus", "Low speed", "pep_speedminus.png", {"speed"},
+playereffects.register_effect_type("pepspeedminus", S("Low speed"), "pep_speedminus.png", {"speed"},
 	function(player)
 		player:set_physics_override({speed=0.5})
 	end,
@@ -139,9 +147,9 @@ playereffects.register_effect_type("pepspeedminus", "Low speed", "pep_speedminus
 		player:set_physics_override({speed=1})
 	end
 )
-playereffects.register_effect_type("pepspeedreset", "Speed neutralizer", "pep_speedreset.png", {"speed"},
+playereffects.register_effect_type("pepspeedreset", S("Speed neutralizer"), "pep_speedreset.png", {"speed"},
 	function() end, function() end)
-playereffects.register_effect_type("pepjumpplus", "High jump", "pep_jumpplus.png", {"jump"},
+playereffects.register_effect_type("pepjumpplus", S("High jump"), "pep_jumpplus.png", {"jump"},
 	function(player)
 		player:set_physics_override({jump=2})
 	end,
@@ -149,7 +157,7 @@ playereffects.register_effect_type("pepjumpplus", "High jump", "pep_jumpplus.png
 		player:set_physics_override({jump=1})
 	end
 )
-playereffects.register_effect_type("pepjumpminus", "Low jump", "pep_jumpminus.png", {"jump"},
+playereffects.register_effect_type("pepjumpminus", S("Low jump"), "pep_jumpminus.png", {"jump"},
 	function(player)
 		player:set_physics_override({jump=0.5})
 	end,
@@ -157,9 +165,9 @@ playereffects.register_effect_type("pepjumpminus", "Low jump", "pep_jumpminus.pn
 		player:set_physics_override({jump=1})
 	end
 )
-playereffects.register_effect_type("pepjumpreset", "Jump height neutralizer", "pep_jumpreset.png", {"jump"},
+playereffects.register_effect_type("pepjumpreset", S("Jump height neutralizer"), "pep_jumpreset.png", {"jump"},
 	function() end, function() end)
-playereffects.register_effect_type("pepgrav0", "No gravity", "pep_grav0.png", {"gravity"},
+playereffects.register_effect_type("pepgrav0", S("No gravity"), "pep_grav0.png", {"gravity"},
 	function(player)
 		player:set_physics_override({gravity=0})
 	end,
@@ -167,15 +175,15 @@ playereffects.register_effect_type("pepgrav0", "No gravity", "pep_grav0.png", {"
 		player:set_physics_override({gravity=1})
 	end
 )
-playereffects.register_effect_type("pepgravreset", "Gravity neutralizer", "pep_gravreset.png", {"gravity"},
+playereffects.register_effect_type("pepgravreset", S("Gravity neutralizer"), "pep_gravreset.png", {"gravity"},
 	function() end, function() end)
-playereffects.register_effect_type("pepregen", "Regeneration", "pep_regen.png", {"health"},
+playereffects.register_effect_type("pepregen", S("Regeneration"), "pep_regen.png", {"health"},
 	function(player)
 		player:set_hp(player:get_hp()+1)
 	end,
 	nil, nil, nil, 2
 )
-playereffects.register_effect_type("pepregen2", "Strong regeneration", "pep_regen2.png", {"health"},
+playereffects.register_effect_type("pepregen2", S("Strong regeneration"), "pep_regen2.png", {"health"},
 	function(player)
 		player:set_hp(player:get_hp()+2)
 	end,
@@ -183,7 +191,7 @@ playereffects.register_effect_type("pepregen2", "Strong regeneration", "pep_rege
 )
 
 if minetest.get_modpath("mana") ~= nil then
-	playereffects.register_effect_type("pepmanaregen", "Weak mana boost", "pep_manaregen.png", {"mana"},
+	playereffects.register_effect_type("pepmanaregen", S("Weak mana boost"), "pep_manaregen.png", {"mana"},
 		function(player)
 			local name = player:get_player_name()
 			mana.setregen(name, mana.getregen(name) + 0.5)
@@ -193,7 +201,7 @@ if minetest.get_modpath("mana") ~= nil then
 			mana.setregen(name, mana.getregen(name) - 0.5)
 		end
 	)
-	playereffects.register_effect_type("pepmanaregen2", "Strong mana boost", "pep_manaregen2.png", {"mana"},
+	playereffects.register_effect_type("pepmanaregen2", S("Strong mana boost"), "pep_manaregen2.png", {"mana"},
 		function(player)
 			local name = player:get_player_name()
 			mana.setregen(name, mana.getregen(name) + 1)
@@ -206,13 +214,13 @@ if minetest.get_modpath("mana") ~= nil then
 end
 
 
-playereffects.register_effect_type("pepbreath", "Perfect breath", "pep_breath.png", {"breath"},
+playereffects.register_effect_type("pepbreath", S("Perfect breath"), "pep_breath.png", {"breath"},
 	function(player)
 		player:set_breath(player:get_breath()+2)
 	end,
 	nil, nil, nil, 1
 )
-playereffects.register_effect_type("pepmole", "Mole mode", "pep_mole.png", {"autodig"},
+playereffects.register_effect_type("pepmole", S("Mole mode"), "pep_mole.png", {"autodig"},
 	function(player)
 		pep.enable_mole_mode(player:get_player_name())
 	end,
@@ -223,102 +231,102 @@ playereffects.register_effect_type("pepmole", "Mole mode", "pep_mole.png", {"aut
 
 pep.register_potion({
 	basename = "speedplus",
-	contentstring = "Running Potion",
-	longdesc = "Drinking it will make you run faster for 30 seconds.",
+	contentstring = S("Running Potion"),
+	longdesc = S("Drinking it will make you run faster for 30 seconds."),
 	effect_type = "pepspeedplus",
 	duration = 30,
 })
 pep.register_potion({
 	basename = "speedminus",
-	contentstring = "Slug Potion",
-	longdesc = "Drinking it will make you walk slower for 30 seconds.",
+	contentstring = S("Slug Potion"),
+	longdesc = S("Drinking it will make you walk slower for 30 seconds."),
 	effect_type = "pepspeedminus",
 	duration = 30,
 })
 pep.register_potion({
 	basename = "speedreset",
-	contentstring = "Speed Neutralizer",
-	longdesc = "Drinking it will stop all speed effects you may currently have.",
+	contentstring = S("Speed Neutralizer"),
+	longdesc = S("Drinking it will stop all speed effects you may currently have."),
 	effect_type = "pepspeedreset",
 	duration = 0
 })
 pep.register_potion({
 	basename = "breath",
-	contentstring = "Air Potion",
-	longdesc = "Drinking it gives you breath underwater for 30 seconds.",
+	contentstring = S("Air Potion"),
+	longdesc = S("Drinking it gives you breath underwater for 30 seconds."),
 	effect_type = "pepbreath",
 	duration = 30,
 })
 pep.register_potion({
 	basename = "regen",
-	contentstring = "Weak Healing Potion",
-	longdesc = "Drinking it makes you regnerate health. Every 2 seconds, you get 1 HP, 10 times in total.",
+	contentstring = S("Weak Healing Potion"),
+	longdesc = S("Drinking it makes you regenerate health. Every 2 seconds, you get 1 HP, 10 times in total."),
 	effect_type = "pepregen",
 	duration = 10,
 })
 pep.register_potion({
 	basename = "regen2",
-	contentstring = "Strong Healing Potion",
-	longdesc = "Drinking it makes you regnerate health quickly. Every second you get 2 HP, 10 times in total.",
+	contentstring = S("Strong Healing Potion"),
+	longdesc = S("Drinking it makes you regenerate health quickly. Every second you get 2 HP, 10 times in total."),
 	effect_type = "pepregen2",
 	duration = 10,
 })
 pep.register_potion({
 	basename = "grav0",
-	contentstring = "Non-Gravity Potion",
-	longdesc = "When you drink this potion, gravity stops affecting you, as if you were in space. The effect lasts for 20 seconds.",
+	contentstring = S("Non-Gravity Potion"),
+	longdesc = S("When you drink this potion, gravity stops affecting you, as if you were in space. The effect lasts for 20 seconds."),
 	effect_type = "pepgrav0",
 	duration = 20,
 })
 pep.register_potion({
 	basename = "gravreset",
-	contentstring = "Gravity Neutralizer",
-	longdesc = "Drinking it will stop all gravity effects you currently have.",
+	contentstring = S("Gravity Neutralizer"),
+	longdesc = S("Drinking it will stop all gravity effects you currently have."),
 	effect_type = "pepgravreset",
 	duration = 0,
 })
 pep.register_potion({
 	basename = "jumpplus",
-	contentstring = "High Jumping Potion",
-	longdesc = "Drinking it will make you jump higher for 30 seconds.",
+	contentstring = S("High Jumping Potion"),
+	longdesc = S("Drinking it will make you jump higher for 30 seconds."),
 	effect_type = "pepjumpplus",
 	duration = 30,
 })
 pep.register_potion({
 	basename = "jumpminus",
-	contentstring = "Low Jumping Potion",
-	longdec = "Drinking it will make you jump lower for 30 seconds.",
+	contentstring = S("Low Jumping Potion"),
+	longdec = S("Drinking it will make you jump lower for 30 seconds."),
 	effect_type = "pepjumpminus",
 	duration = 30,
 })
 pep.register_potion({
 	basename = "jumpreset",
-	contentstring = "Jump Neutralizer",
-	longdesc = "Drinking it will stop all jumping effects you may currently have.",
+	contentstring = S("Jump Neutralizer"),
+	longdesc = S("Drinking it will stop all jumping effects you may currently have."),
 	effect_type = "pepjumpreset",
 	duration = 0,
 })
 pep.register_potion({
 	basename = "mole",
-	contentstring = "Mole Potion",
-	longdesc = "Drinking it will start an effect which will magically attempt to mine any two blocks in front of you horizontally, as if you were using a steel pickaxe on them. The effect lasts for 18 seconds.",
+	contentstring = S("Mole Potion"),
+	longdesc = S("Drinking it will start an effect which will magically attempt to mine any two blocks in front of you horizontally, as if you were using a steel pickaxe on them. The effect lasts for 18 seconds."),
 	effect_type = "pepmole",
 	duration = 18,
 })
 if(minetest.get_modpath("mana")~=nil) then
 	pep.register_potion({
 		basename = "manaregen",
-		contentstring = "Weak Mana Potion",
+		contentstring = S("Weak Mana Potion"),
 		effect_type = "pepmanaregen",
 		duration = 10,
-		longdesc = "Drinking it will increase your mana regeneration rate by 0.5 for 10 seconds.",
+		longdesc = S("Drinking it will increase your mana regeneration rate by 0.5 for 10 seconds."),
 	})
 	pep.register_potion({
 		basename = "manaregen2",
-		contentstring = "Strong Mana Potion",
+		contentstring = S("Strong Mana Potion"),
 		effect_type = "pepmanaregen2",
 		duration = 10,
-		longdesc = "Drinking it will increase your mana regeneration rate by 1 for 10 seconds.",
+		longdesc = S("Drinking it will increase your mana regeneration rate by 1 for 10 seconds."),
 	})
 end
 
