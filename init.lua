@@ -23,8 +23,8 @@ function pep.register_potion(potiondef)
 	end
 	minetest.register_craftitem("pep:"..potiondef.basename, {
 		description = string.format(S("Glass Bottle (%s)"), potiondef.contentstring),
-		x_doc_items_longdesc = potiondef.longdesc,
-		x_doc_items_usagehelp = S("Hold it in your hand, then left-click to drink it."),
+		_doc_items_longdesc = potiondef.longdesc,
+		_doc_items_usagehelp = S("Hold it in your hand, then left-click to drink it."),
 		inventory_image = "pep_"..potiondef.basename..".png",
 		wield_image = "pep_"..potiondef.basename..".png",
 		on_use = on_use,
