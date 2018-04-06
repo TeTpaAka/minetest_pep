@@ -6,6 +6,23 @@ else
 	S = function(s) return s end
 end
 
+function return_empty_bottle(potiondef, user, itemstack)
+	local inventory = user:get_inventory()
+	if potiondef.empty_vessel == nil then
+		return itemstack
+	end
+	if (itemstack:is_empty()) then
+		return ItemStack(potiondef.empty_vessel)
+	else
+		if inventory:room_for_item("main", potiondef.empty_vessel) then
+			inventory:add_item("main", potiondef.empty_vessel)
+		else
+			minetest.add_item(user:getpos(), potiondef.empty_vessel)
+		end
+	end
+	return itemstack
+end
+
 pep = {}
 function pep.register_potion(potiondef)
 	local on_use
@@ -13,11 +30,13 @@ function pep.register_potion(potiondef)
 		on_use = function(itemstack, user, pointed_thing)
 			playereffects.apply_effect_type(potiondef.effect_type, potiondef.duration, user)
 			itemstack:take_item()
+			itemstack = return_empty_bottle(potiondef, user, itemstack)
 			return itemstack
 		end
 	else
 		on_use = function(itemstack, user, pointed_thing)
 			itemstack:take_item()
+			itemstack = return_empty_bottle(potiondef, user, itemstack)
 			return itemstack
 		end
 	end
@@ -234,6 +253,7 @@ pep.register_potion({
 	longdesc = S("Drinking it will make you run faster for 30 seconds."),
 	effect_type = "pepspeedplus",
 	duration = 30,
+	empty_vessel = "vessels:glass_bottle",
 })
 pep.register_potion({
 	basename = "speedminus",
@@ -241,13 +261,15 @@ pep.register_potion({
 	longdesc = S("Drinking it will make you walk slower for 30 seconds."),
 	effect_type = "pepspeedminus",
 	duration = 30,
+	empty_vessel = "vessels:glass_bottle",
 })
 pep.register_potion({
 	basename = "speedreset",
 	contentstring = S("Speed Neutralizer"),
 	longdesc = S("Drinking it will stop all speed effects you may currently have."),
 	effect_type = "pepspeedreset",
-	duration = 0
+	duration = 0,
+	empty_vessel = "vessels:glass_bottle",
 })
 pep.register_potion({
 	basename = "breath",
@@ -255,6 +277,7 @@ pep.register_potion({
 	longdesc = S("Drinking it gives you breath underwater for 30 seconds."),
 	effect_type = "pepbreath",
 	duration = 30,
+	empty_vessel = "vessels:glass_bottle",
 })
 pep.register_potion({
 	basename = "regen",
@@ -262,6 +285,7 @@ pep.register_potion({
 	longdesc = S("Drinking it makes you regenerate health. Every 2 seconds, you get 1 HP, 10 times in total."),
 	effect_type = "pepregen",
 	duration = 10,
+	empty_vessel = "vessels:glass_bottle",
 })
 pep.register_potion({
 	basename = "regen2",
@@ -269,6 +293,7 @@ pep.register_potion({
 	longdesc = S("Drinking it makes you regenerate health quickly. Every second you get 2 HP, 10 times in total."),
 	effect_type = "pepregen2",
 	duration = 10,
+	empty_vessel = "vessels:glass_bottle",
 })
 pep.register_potion({
 	basename = "grav0",
@@ -276,6 +301,7 @@ pep.register_potion({
 	longdesc = S("When you drink this potion, gravity stops affecting you, as if you were in space. The effect lasts for 20 seconds."),
 	effect_type = "pepgrav0",
 	duration = 20,
+	empty_vessel = "vessels:glass_bottle",
 })
 pep.register_potion({
 	basename = "gravreset",
@@ -283,6 +309,7 @@ pep.register_potion({
 	longdesc = S("Drinking it will stop all gravity effects you currently have."),
 	effect_type = "pepgravreset",
 	duration = 0,
+	empty_vessel = "vessels:glass_bottle",
 })
 pep.register_potion({
 	basename = "jumpplus",
@@ -290,6 +317,7 @@ pep.register_potion({
 	longdesc = S("Drinking it will make you jump higher for 30 seconds."),
 	effect_type = "pepjumpplus",
 	duration = 30,
+	empty_vessel = "vessels:glass_bottle",
 })
 pep.register_potion({
 	basename = "jumpminus",
@@ -297,6 +325,7 @@ pep.register_potion({
 	longdesc = S("Drinking it will make you jump lower for 30 seconds."),
 	effect_type = "pepjumpminus",
 	duration = 30,
+	empty_vessel = "vessels:glass_bottle",
 })
 pep.register_potion({
 	basename = "jumpreset",
@@ -304,6 +333,7 @@ pep.register_potion({
 	longdesc = S("Drinking it will stop all jumping effects you may currently have."),
 	effect_type = "pepjumpreset",
 	duration = 0,
+	empty_vessel = "vessels:glass_bottle",
 })
 pep.register_potion({
 	basename = "mole",
@@ -311,6 +341,7 @@ pep.register_potion({
 	longdesc = S("Drinking it will start an effect which will magically attempt to mine any two blocks in front of you horizontally, as if you were using a steel pickaxe on them. The effect lasts for 18 seconds."),
 	effect_type = "pepmole",
 	duration = 18,
+	empty_vessel = "vessels:glass_bottle",
 })
 if(minetest.get_modpath("mana")~=nil) then
 	pep.register_potion({
@@ -319,6 +350,7 @@ if(minetest.get_modpath("mana")~=nil) then
 		effect_type = "pepmanaregen",
 		duration = 10,
 		longdesc = S("Drinking it will increase your mana regeneration rate by 0.5 for 10 seconds."),
+		empty_vessel = "vessels:glass_bottle",
 	})
 	pep.register_potion({
 		basename = "manaregen2",
@@ -326,6 +358,7 @@ if(minetest.get_modpath("mana")~=nil) then
 		effect_type = "pepmanaregen2",
 		duration = 10,
 		longdesc = S("Drinking it will increase your mana regeneration rate by 1 for 10 seconds."),
+		empty_vessel = "vessels:glass_bottle",
 	})
 end
 
