@@ -130,48 +130,90 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
+local use_monoids = minetest.get_modpath("player_monoids") ~= nil
+
 playereffects.register_effect_type("pepspeedplus", S("High speed"), "pep_speedplus.png", {"speed"},
 	function(player)
-		player:set_physics_override({speed=2})
+		if use_monoids then
+			player_monoids.speed:add_change(player, 2, "pep:speed")
+		else
+			player:set_physics_override({speed=2})
+		end
 	end,
 	function(effect, player)
-		player:set_physics_override({speed=1})
+		if use_monoids then
+			player_monoids.speed:del_change(player, "pep:speed")
+		else
+			player:set_physics_override({speed=1})
+		end
 	end
 )
 playereffects.register_effect_type("pepspeedminus", S("Low speed"), "pep_speedminus.png", {"speed"},
 	function(player)
-		player:set_physics_override({speed=0.5})
+		if use_monoids then
+			player_monoids.speed:add_change(player, .5, "pep:speed")
+		else
+			player:set_physics_override({speed=.5})
+		end
 	end,
 	function(effect, player)
-		player:set_physics_override({speed=1})
+		if use_monoids then
+			player_monoids.speed:del_change(player, "pep:speed")
+		else
+			player:set_physics_override({speed=1})
+		end
 	end
 )
 playereffects.register_effect_type("pepspeedreset", S("Speed neutralizer"), "pep_speedreset.png", {"speed"},
 	function() end, function() end)
 playereffects.register_effect_type("pepjumpplus", S("High jump"), "pep_jumpplus.png", {"jump"},
 	function(player)
-		player:set_physics_override({jump=2})
+		if use_monoids then
+			player_monoids.jump:add_change(player, 2, "pep:jump")
+		else
+			player:set_physics_override({jump=2})
+		end
 	end,
 	function(effect, player)
-		player:set_physics_override({jump=1})
+		if use_monoids then
+			player_monoids.jump:del_change(player, "pep:jump")
+		else
+			player:set_physics_override({jump=1})
+		end
 	end
 )
 playereffects.register_effect_type("pepjumpminus", S("Low jump"), "pep_jumpminus.png", {"jump"},
 	function(player)
-		player:set_physics_override({jump=0.5})
+		if use_monoids then
+			player_monoids.jump:add_change(player, .5, "pep:jump")
+		else
+			player:set_physics_override({jump=1})
+		end
 	end,
 	function(effect, player)
-		player:set_physics_override({jump=1})
+		if use_monoids then
+			player_monoids.jump:del_change(player, "pep:jump")
+		else
+			player:set_physics_override({jump=1})
+		end
 	end
 )
 playereffects.register_effect_type("pepjumpreset", S("Jump height neutralizer"), "pep_jumpreset.png", {"jump"},
 	function() end, function() end)
 playereffects.register_effect_type("pepgrav0", S("No gravity"), "pep_grav0.png", {"gravity"},
 	function(player)
-		player:set_physics_override({gravity=0})
+		if use_monoids then
+			player_monoids.gravity:add_change(player, 0, "pep:gravity")
+		else
+			player:set_physics_override({gravity=0})
+		end
 	end,
 	function(effect, player)
-		player:set_physics_override({gravity=1})
+		if use_monoids then
+			player_monoids.gravity:del_change(player, "pep:gravity")
+		else
+			player:set_physics_override({gravity=0})
+		end
 	end
 )
 playereffects.register_effect_type("pepgravreset", S("Gravity neutralizer"), "pep_gravreset.png", {"gravity"},

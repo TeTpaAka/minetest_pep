@@ -5,3 +5,4 @@ flowers?
 farming?
 mana?
 intllib?
+player_monoids?
